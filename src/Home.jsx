@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 /* ─────────────────────────────────────────────────────
@@ -83,6 +84,11 @@ const Icon = {
       <path d="M1.5 5l2.5 2.5L8.5 2"/>
     </svg>
   ),
+  ChevronDown: () => (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 6l4 4 4-4"/>
+    </svg>
+  ),
 };
 
 /* ─────────────────────────────────────────────────────
@@ -153,16 +159,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="page-root">
 
       {/* ══════════════════════════════
-          NAVBAR
+          NAVBAR — Tesla-inspired, single row, full-width
       ══════════════════════════════ */}
-      <nav className={`nav${scrolled ? " scrolled" : ""}`}>
-        <div className="nav__body">
+      <nav className={`nav${scrolled ? " nav--scrolled" : ""}`}>
+        <div className="nav__inner">
           <a href="#" className="nav__logo">
             <img
-              src="/logo.png"
+              src="/logo_only.svg"
               alt="SmartPC"
               onError={(e) => { e.currentTarget.style.display = "none"; }}
             />
@@ -177,69 +183,53 @@ export default function Home() {
             ))}
           </ul>
 
-          <button className="nav__cta">
-            Comenzar <Icon.Arrow />
-          </button>
+          <div className="nav__right">
+           <Link to="/recomendador" className="nav__cta">
+              Comenzar <Icon.Arrow />
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* ══════════════════════════════
-          HERO
+          HERO — Tesla full-screen, centered, dominant
       ══════════════════════════════ */}
       <section className="hero" id="inicio">
+        <div className="hero__bg-grid" />
+        <div className="hero__bg-glow-left" />
+        <div className="hero__bg-glow-right" />
 
-        {/* Left — copy */}
-        <div className="hero__left">
-          <div className="hero__tag anim">
+        {/* Centro: headline + CTAs */}
+        <div className="hero__center anim">
+          <div className="hero__tag">
             <span className="hero__tag-dot" />
-            <span className="hero__tag-pill">Asesor inteligente de cómputo</span>
+            <span>Asesor inteligente de cómputo</span>
           </div>
 
           <h1 className="hero__headline anim d1">
-            Encuentra el equipo<br />
+            Encuentra la computadora<br />
             que <i>realmente</i> necesitas
           </h1>
 
           <p className="hero__sub anim d2">
-            SmartPC analiza tu perfil y presupuesto para recomendarte
-            la computadora ideal. Sin tecnicismos, sin confusión.
+            SmartPC analiza tu perfil y presupuesto para recomendarte<br className="hero__br" />
+            el equipo ideal. Sin tecnicismos, sin confusión.
           </p>
 
           <div className="hero__actions anim d3">
-            <button className="btn-primary">
-              Encontrar mi PC <Icon.Arrow />
-            </button>
-            <button className="btn-ghost">
-              Ver cómo funciona
-            </button>
-          </div>
+            <Link to="/recomendador" className="btn-primary btn-primary--hero">
+               Encontrar mi PC <Icon.Arrow />
+            </Link>
 
-          <div className="hero__benefits anim d4">
-            {[
-              { icon: "Shield", title: "Sin datos inventados", sub: "Recomendaciones basadas en tu perfil real" },
-              { icon: "Target", title: "Explicación incluida",  sub: "Sabrás por qué te recomendamos cada equipo" },
-              { icon: "Zap",    title: "Sin registro",          sub: "Resultados al instante, sin formularios" },
-            ].map((b) => {
-              const BenefitIcon = Icon[b.icon];
-              return (
-                <div className="hero__benefit" key={b.title}>
-                  <div className="hero__benefit-icon">
-                    {BenefitIcon && <BenefitIcon />}
-                  </div>
-                  <div className="hero__benefit-text">
-                    <strong>{b.title}</strong>
-                    {b.sub}
-                  </div>
-                </div>
-              );
-            })}
+            <a href="#como-funciona" className="btn-ghost btn-ghost--hero">
+             Ver cómo funciona
+            </a>
           </div>
         </div>
 
-        {/* Right — configurador + resultado */}
-        <div className="hero__right anim d2">
-
-          {/* Panel configurador */}
+        {/* Panel inferior: configurador + resultado */}
+        <div className="hero__panel-row anim d4">
+          {/* Config panel */}
           <div className="config-panel">
             <div className="config-panel__top-stripe" />
             <div className="config-panel__hd">
@@ -288,7 +278,7 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Panel resultado mockup */}
+          {/* Result mockup panel */}
           <div className="result-panel">
             <div className="result-panel__header">
               <span className="result-panel__label">Tu PC recomendada</span>
@@ -326,6 +316,27 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Benefits strip */}
+          <div className="hero__benefits">
+            {[
+              { icon: "Shield", title: "Sin datos inventados", sub: "Recomendaciones basadas en tu perfil real" },
+              { icon: "Target", title: "Explicación incluida",  sub: "Sabrás por qué te recomendamos cada equipo" },
+              { icon: "Zap",    title: "Sin registro",          sub: "Resultados al instante, sin formularios" },
+            ].map((b) => {
+              const BenefitIcon = Icon[b.icon];
+              return (
+                <div className="hero__benefit" key={b.title}>
+                  <div className="hero__benefit-icon">
+                    {BenefitIcon && <BenefitIcon />}
+                  </div>
+                  <div className="hero__benefit-text">
+                    <strong>{b.title}</strong>
+                    {b.sub}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -333,24 +344,26 @@ export default function Home() {
           FEATURES
       ══════════════════════════════ */}
       <section className="section section--alt" id="funciones">
-        <div className="section__eyebrow">Funcionalidades</div>
-        <h2 className="section__title">Todo lo que necesitas para <i>elegir bien</i></h2>
-        <p className="section__desc">
-          Un conjunto de herramientas diseñadas para que la decisión de comprar
-          una computadora sea clara, rápida y sin estrés.
-        </p>
-        <div className="features-layout">
-          {FEATURES.map((f) => {
-            const Ic = Icon[f.icon];
-            return (
-              <div key={f.title} className={`feature-card${f.wide ? " feature-card--wide" : ""}`}>
-                {f.tag && <span className="feature-card__tag">{f.tag}</span>}
-                <div className="feature-card__icon">{Ic && <Ic />}</div>
-                <div className="feature-card__title">{f.title}</div>
-                <div className="feature-card__desc">{f.desc}</div>
-              </div>
-            );
-          })}
+        <div className="section__inner">
+          <div className="section__eyebrow">Funcionalidades</div>
+          <h2 className="section__title">Todo lo que necesitas para <i>elegir bien</i></h2>
+          <p className="section__desc">
+            Un conjunto de herramientas diseñadas para que la decisión de comprar
+            una computadora sea clara, rápida y sin estrés.
+          </p>
+          <div className="features-layout">
+            {FEATURES.map((f) => {
+              const Ic = Icon[f.icon];
+              return (
+                <div key={f.title} className={`feature-card${f.wide ? " feature-card--wide" : ""}`}>
+                  {f.tag && <span className="feature-card__tag">{f.tag}</span>}
+                  <div className="feature-card__icon">{Ic && <Ic />}</div>
+                  <div className="feature-card__title">{f.title}</div>
+                  <div className="feature-card__desc">{f.desc}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -358,20 +371,22 @@ export default function Home() {
           HOW IT WORKS
       ══════════════════════════════ */}
       <section className="section section--dark" id="como-funciona">
-        <div className="section__eyebrow">Proceso</div>
-        <h2 className="section__title">En 4 pasos encuentras tu <i>PC ideal</i></h2>
-        <p className="section__desc">
-          Sin crear cuenta, sin complicaciones. Responde unas preguntas
-          y deja que SmartPC trabaje por ti.
-        </p>
-        <div className="steps-grid">
-          {STEPS.map((s) => (
-            <div className="step-item" key={s.n}>
-              <div className="step-num">{s.n}</div>
-              <div className="step-title">{s.title}</div>
-              <div className="step-desc">{s.desc}</div>
-            </div>
-          ))}
+        <div className="section__inner">
+          <div className="section__eyebrow">Proceso</div>
+          <h2 className="section__title">En 4 pasos encuentras tu <i>PC ideal</i></h2>
+          <p className="section__desc">
+            Sin crear cuenta, sin complicaciones. Responde unas preguntas
+            y deja que SmartPC trabaje por ti.
+          </p>
+          <div className="steps-grid">
+            {STEPS.map((s) => (
+              <div className="step-item" key={s.n}>
+                <div className="step-num">{s.n}</div>
+                <div className="step-title">{s.title}</div>
+                <div className="step-desc">{s.desc}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -379,32 +394,34 @@ export default function Home() {
           PROFILES
       ══════════════════════════════ */}
       <section className="section section--white" id="perfiles">
-        <div className="section__eyebrow">Perfiles de uso</div>
-        <h2 className="section__title">¿Cuál es tu <i>tipo de usuario?</i></h2>
-        <p className="section__desc">
-          Cada perfil prioriza las especificaciones que realmente importan
-          para tu forma de trabajar o jugar.
-        </p>
-        <div className="profiles-grid">
-          {PROFILE_DETAILS.map((p, i) => {
-            const Ic = Icon[p.icon];
-            return (
-              <div
-                key={p.name}
-                className={`profile-card${activeProfile === i ? " active" : ""}`}
-                onClick={() => setActiveProfile(activeProfile === i ? null : i)}
-              >
-                <div className="profile-card__icon-box">{Ic && <Ic />}</div>
-                <div className="profile-card__name">{p.name}</div>
-                <div className="profile-card__desc">{p.desc}</div>
-                {activeProfile === i && (
-                  <div className="profile-card__active-tag">
-                    <Icon.Check /> Seleccionado
-                  </div>
-                )}
-              </div>
-            );
-          })}
+        <div className="section__inner">
+          <div className="section__eyebrow">Perfiles de uso</div>
+          <h2 className="section__title">¿Cuál es tu <i>tipo de usuario?</i></h2>
+          <p className="section__desc">
+            Cada perfil prioriza las especificaciones que realmente importan
+            para tu forma de trabajar o jugar.
+          </p>
+          <div className="profiles-grid">
+            {PROFILE_DETAILS.map((p, i) => {
+              const Ic = Icon[p.icon];
+              return (
+                <div
+                  key={p.name}
+                  className={`profile-card${activeProfile === i ? " active" : ""}`}
+                  onClick={() => setActiveProfile(activeProfile === i ? null : i)}
+                >
+                  <div className="profile-card__icon-box">{Ic && <Ic />}</div>
+                  <div className="profile-card__name">{p.name}</div>
+                  <div className="profile-card__desc">{p.desc}</div>
+                  {activeProfile === i && (
+                    <div className="profile-card__active-tag">
+                      <Icon.Check /> Seleccionado
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -424,58 +441,75 @@ export default function Home() {
             y recibe tu recomendación personalizada en minutos.
           </p>
           <div className="cta-actions">
-            <button className="btn-primary btn-primary--cta">
-              Iniciar cuestionario <Icon.Arrow />
-            </button>
-            <button className="btn-ghost btn-ghost--inv">
-              Ver comparador
-            </button>
+            <Link to="/recomendador" className="btn-primary btn-primary--cta">
+               Iniciar mi cuestionario <Icon.Arrow />
+            </Link>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════
-          FOOTER
+          FOOTER — corporativo, full-width
       ══════════════════════════════ */}
       <footer className="footer">
-        <div className="footer__top">
-          <div className="footer__brand">
-            <div className="footer__logo">
-              <img
-                src="/logo.png"
-                alt="SmartPC"
-                onError={(e) => { e.currentTarget.style.display = "none"; }}
-              />
-              <span className="footer__logo-text">Smart<em>PC</em></span>
+        <div className="footer__inner">
+          <div className="footer__top">
+            {/* Brand column */}
+            <div className="footer__brand">
+              <div className="footer__logo">
+                <img
+                  src="/logo.svg"
+                  alt="SmartPC"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+                <span className="footer__logo-text">Smart<em>PC</em></span>
+              </div>
+              <p className="footer__tagline">
+                Tu asesor de cómputo inteligente.<br />
+                Recomendaciones personalizadas,<br />resultados precisos.
+              </p>
             </div>
-            <p className="footer__tagline">
-              Tu asesor de cómputo inteligente.<br />Proyecto académico — IPN ESCOM.
-            </p>
-          </div>
-          <div className="footer__cols">
-            <div>
-              <div className="footer__col-title">Sistema</div>
-              <div className="footer__col-links">
-                {["Inicio", "Funciones", "Comparador", "Glosario"].map((l) => (
-                  <a key={l} href="#">{l}</a>
-                ))}
+
+            {/* Link columns */}
+            <div className="footer__cols">
+              <div className="footer__col">
+                <div className="footer__col-title">Plataforma</div>
+                <div className="footer__col-links">
+                  {["Inicio", "Funciones", "Comparador de equipos", "Glosario técnico"].map((l) => (
+                    <a key={l} href="#">{l}</a>
+                  ))}
+                </div>
+              </div>
+              <div className="footer__col">
+                <div className="footer__col-title">Perfiles</div>
+                <div className="footer__col-links">
+                  {["Gaming", "Programación", "Diseño", "Oficina"].map((l) => (
+                    <a key={l} href="#">{l}</a>
+                  ))}
+                </div>
+              </div>
+              <div className="footer__col">
+                <div className="footer__col-title">Soporte</div>
+                <div className="footer__col-links">
+                  {["Guía de compra", "Recomendaciones inteligentes", "Contacto", "Ayuda"].map((l) => (
+                    <a key={l} href="#">{l}</a>
+                  ))}
+                </div>
               </div>
             </div>
-            <div>
-              <div className="footer__col-title">Perfiles</div>
-              <div className="footer__col-links">
-                {["Gaming", "Programación", "Diseño", "Oficina"].map((l) => (
-                  <a key={l} href="#">{l}</a>
-                ))}
-              </div>
-            </div>
           </div>
-        </div>
-        <div className="footer__bottom">
-          <span className="footer__copy">© 2025 SmartPC — IPN ESCOM. Proyecto académico.</span>
-          <div className="footer__stack">
-            <span className="footer__stack-dot" />
-            Desarrollado con React + Vite
+
+          <div className="footer__divider" />
+
+          <div className="footer__bottom">
+            <span className="footer__copy">© 2026 SmartPC. Todos los derechos reservados.</span>
+            <div className="footer__legal">
+              <a href="#">Aviso de privacidad</a>
+              <span className="footer__legal-sep" />
+              <a href="#">Términos de uso</a>
+              <span className="footer__legal-sep" />
+              <a href="#">Soporte</a>
+            </div>
           </div>
         </div>
       </footer>
