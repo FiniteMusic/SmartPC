@@ -4,7 +4,7 @@ import "./AdminScraping.css";
 import { API_URL } from "../../config/api";
 
 /* ─────────────────────────────────────────────────────
-   CONFIG — cambia aquí la URL base del backend
+   CONFIG — 
 ───────────────────────────────────────────────────── */
 const API_BASE = `${API_URL}/api/scraping`;
 
