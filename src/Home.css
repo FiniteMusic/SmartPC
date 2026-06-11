@@ -6,6 +6,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
+
+html {
+  scroll-behavior: smooth;
+}
 /* ─── Variables ─────────────────────────────────── */
 :root {
   /* Brand */
@@ -779,7 +783,7 @@ input[type="range"].slider::-moz-range-thumb { width: 15px; height: 15px; border
 .cta-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
 /* ===================================================
-   FOOTER — full-width, corporativo
+   FOOTER 
    =================================================== */
 .footer {
   width: 100%;

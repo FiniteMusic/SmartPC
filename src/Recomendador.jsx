@@ -121,98 +121,57 @@ const Icon = {
 const formatMXN = (n) =>
   new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
 
-const ALL_COMPUTERS = [
-  {
-    id: 1,
-    nombre: "Lenovo LOQ 15",
-    precio: 22499,
-    perfiles: ["Gaming", "Programación"],
-    scores: { Gaming: 91, Programación: 85, Diseño: 72, Oficina: 68 },
-    cpu: "Intel Core i5-13420H",
-    ram: "16 GB DDR5",
-    gpu: "NVIDIA RTX 4060 8 GB",
-    almacenamiento: "512 GB NVMe SSD",
-    pantalla: '15.6" FHD 144 Hz IPS',
-    descripcion: "Equilibrio ideal entre rendimiento y precio para gaming competitivo y desarrollo.",
-    fortalezas: ["Excelente relación precio-rendimiento", "GPU RTX 4060 de última generación", "Pantalla de alta frecuencia de refresco"],
-    linkTienda: "https://www.lenovo.com/mx",
-  },
-  {
-    id: 2,
-    nombre: "ASUS TUF Gaming A15",
-    precio: 27999,
-    perfiles: ["Gaming", "Diseño"],
-    scores: { Gaming: 94, Programación: 78, Diseño: 83, Oficina: 60 },
-    cpu: "AMD Ryzen 7 7745HX",
-    ram: "16 GB DDR5",
-    gpu: "NVIDIA RTX 4070 8 GB",
-    almacenamiento: "1 TB NVMe SSD",
-    pantalla: '15.6" FHD 144 Hz IPS',
-    descripcion: "Potencia bruta para gaming exigente y trabajos creativos intensivos.",
-    fortalezas: ["RTX 4070 para gaming de alto nivel", "Procesador AMD de 8 núcleos", "1 TB de almacenamiento"],
-    linkTienda: "https://www.asus.com/mx",
-  },
-  {
-    id: 3,
-    nombre: "HP Victus 15",
-    precio: 17999,
-    perfiles: ["Gaming", "Oficina"],
-    scores: { Gaming: 79, Programación: 71, Diseño: 65, Oficina: 80 },
-    cpu: "Intel Core i5-12450H",
-    ram: "8 GB DDR4",
-    gpu: "NVIDIA RTX 3050 4 GB",
-    almacenamiento: "256 GB NVMe SSD",
-    pantalla: '15.6" FHD 144 Hz IPS',
-    descripcion: "Punto de entrada accesible al gaming sin sacrificar calidad de pantalla.",
-    fortalezas: ["El más accesible con GPU dedicada", "Pantalla 144 Hz", "Marca de alta fiabilidad"],
-    linkTienda: "https://www.hp.com/mx",
-  },
-  {
-    id: 4,
-    nombre: "MacBook Air M3",
-    precio: 34999,
-    perfiles: ["Diseño", "Programación", "Oficina"],
-    scores: { Gaming: 38, Programación: 93, Diseño: 96, Oficina: 92 },
-    cpu: "Apple M3 (8 núcleos)",
-    ram: "8 GB Unificada",
-    gpu: "Apple GPU 10 núcleos",
-    almacenamiento: "256 GB SSD",
-    pantalla: '13.6" Liquid Retina 2560×1664',
-    descripcion: "La elección premium para diseñadores y desarrolladores que priorizan pantalla y autonomía.",
-    fortalezas: ["Pantalla Retina de referencia", "Batería de hasta 18 horas", "Rendimiento silencioso sin ventilador"],
-    linkTienda: "https://www.apple.com/mx",
-  },
-  {
-    id: 5,
-    nombre: "Dell Inspiron 15",
-    precio: 14999,
-    perfiles: ["Oficina", "Programación"],
-    scores: { Gaming: 42, Programación: 74, Diseño: 58, Oficina: 88 },
-    cpu: "Intel Core i5-1335U",
-    ram: "16 GB DDR4",
-    gpu: "Intel Iris Xe Graphics",
-    almacenamiento: "512 GB SSD",
-    pantalla: '15.6" FHD IPS',
-    descripcion: "Productividad cotidiana con excelente autonomía y precio competitivo.",
-    fortalezas: ["Mejor precio del catálogo", "16 GB RAM incluida", "Construcción sólida y confiable"],
-    linkTienda: "https://www.dell.com/mx",
-  },
-  {
-    id: 6,
-    nombre: "Lenovo ThinkPad E15",
-    precio: 19999,
-    perfiles: ["Programación", "Oficina"],
-    scores: { Gaming: 35, Programación: 90, Diseño: 70, Oficina: 94 },
-    cpu: "AMD Ryzen 5 5600U",
-    ram: "16 GB DDR4",
-    gpu: "AMD Radeon Integrated",
-    almacenamiento: "512 GB NVMe SSD",
-    pantalla: '15.6" FHD IPS Anti-glare',
-    descripcion: "El estándar de productividad empresarial, teclado excepcional y durabilidad probada.",
-    fortalezas: ["Teclado de referencia en la industria", "Certificación militar MIL-SPEC", "Soporte empresarial Lenovo"],
-    linkTienda: "https://www.lenovo.com/mx",
-  },
-];
+const API_BASE = "http://localhost:3001/api";
+
+const normalizarNombrePerfil = (nombre = "") =>
+  String(nombre)
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+const normalizarComponente = (componente = "") => {
+  const key = String(componente).trim().toLowerCase();
+
+  const mapa = {
+    cpu: "cpu",
+    ram: "ram",
+    gpu: "gpu",
+    almacenamiento: "almacenamiento",
+    pantalla: "pantalla",
+    bateria: "bateria",
+    batería: "bateria",
+    portabilidad: "portabilidad",
+  };
+
+  return mapa[key] || key;
+};
+
+const normalizarPesosFrontend = (pesos = {}) => {
+  const normalizados = {};
+
+  Object.entries(pesos).forEach(([componente, peso]) => {
+    normalizados[normalizarComponente(componente)] = Number(peso);
+  });
+
+  return normalizados;
+};
+
+const formatearComponente = (tipo) => {
+  const nombres = {
+    cpu: "CPU",
+    ram: "RAM",
+    gpu: "GPU",
+    almacenamiento: "Almacenamiento",
+    pantalla: "Pantalla",
+    bateria: "Batería",
+    portabilidad: "Portabilidad",
+  };
+
+  return nombres[tipo] || tipo;
+};
+
+
 
 const PROFILES_CONFIG = [
   {
@@ -224,7 +183,7 @@ const PROFILES_CONFIG = [
     prioridades: ["GPU de alto rendimiento", "Alta frecuencia de refresco", "RAM DDR5 velocidad"],
   },
   {
-    key: "Programación",
+    key: "Programacion",
     icon: "Code",
     label: "Programación",
     hint: "CPU y RAM prioritarios",
@@ -232,7 +191,7 @@ const PROFILES_CONFIG = [
     prioridades: ["CPU multinúcleo rápido", "RAM abundante (16+ GB)", "SSD NVMe veloz"],
   },
   {
-    key: "Diseño",
+    key: "Diseno",
     icon: "Design",
     label: "Diseño",
     hint: "Color preciso y GPU",
@@ -280,6 +239,18 @@ const GLOSARIO = {
     ejemplo: "NVMe es el tipo más rápido; velocidades de 3000+ MB/s.",
   },
 };
+/*   Rangos Minimos y Maximos */
+const B_MIN = 1000;
+const B_MAX = 80000;
+const B_STEP = 500;
+
+  const clampBudget = (value, min, max) => {
+  const numberValue = Number(value);
+
+  if (Number.isNaN(numberValue)) return min;
+
+  return Math.min(Math.max(numberValue, min), max);
+};
 
 /* ─────────────────────────────────────────────────────
    Main Component
@@ -293,12 +264,138 @@ export default function Recomendador() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  useEffect(() => {
+  async function cargarPesosPerfiles() {
+    setCargandoPesos(true);
+
+    try {
+      const res = await fetch(`${API_BASE}/perfiles/pesos`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.detalle || data.mensaje || "No se pudieron cargar los pesos.");
+      }
+
+      setPesosPerfiles(data.perfiles || {});
+    } catch (error) {
+      console.error("Error al cargar pesos de perfiles:", error);
+      setPesosPerfiles({});
+    } finally {
+      setCargandoPesos(false);
+    }
+  }
+
+  cargarPesosPerfiles();
+}, []);
+  
+
   /* Config state */
   const [step,         setStep]         = useState(1);   // 1-3
   const [profile,      setProfile]      = useState(null);
   const [budgetMin,    setBudgetMin]     = useState(10000);
   const [budgetMax,    setBudgetMax]     = useState(30000);
   const [prefs,        setPrefs]        = useState([]);
+  
+  const [budgetMinInput, setBudgetMinInput] = useState(String(budgetMin));
+const [budgetMaxInput, setBudgetMaxInput] = useState(String(budgetMax));
+const [budgetMessage, setBudgetMessage] = useState("");
+
+const mostrarMensajePresupuesto = (mensaje) => {
+  setBudgetMessage(mensaje);
+
+  window.clearTimeout(window.smartpcBudgetMsgTimeout);
+  window.smartpcBudgetMsgTimeout = window.setTimeout(() => {
+    setBudgetMessage("");
+  }, 3500);
+};
+
+const normalizarPresupuesto = (valor) => {
+  const limpio = String(valor).replace(/[^\d]/g, "");
+  return limpio === "" ? null : Number(limpio);
+};
+
+const validarBudgetMin = () => {
+  const valor = normalizarPresupuesto(budgetMinInput);
+
+  if (valor === null) {
+    setBudgetMinInput(String(budgetMin));
+    return;
+  }
+
+  if (valor < B_MIN) {
+    setBudgetMin(B_MIN);
+    setBudgetMinInput(String(B_MIN));
+    mostrarMensajePresupuesto(`El presupuesto mínimo no puede ser menor a ${formatMXN(B_MIN)}.`);
+    return;
+  }
+
+  if (valor > B_MAX) {
+    setBudgetMin(B_MAX);
+    setBudgetMinInput(String(B_MAX));
+    setBudgetMax(B_MAX);
+    setBudgetMaxInput(String(B_MAX));
+    mostrarMensajePresupuesto(`El presupuesto mínimo no puede superar ${formatMXN(B_MAX)}.`);
+    return;
+  }
+
+  if (valor > budgetMax) {
+    setBudgetMin(valor);
+    setBudgetMax(valor);
+    setBudgetMinInput(String(valor));
+    setBudgetMaxInput(String(valor));
+    mostrarMensajePresupuesto("El mínimo no puede ser mayor que el máximo. Ajustamos ambos valores.");
+    return;
+  }
+
+  setBudgetMin(valor);
+  setBudgetMinInput(String(valor));
+};
+
+const validarBudgetMax = () => {
+  const valor = normalizarPresupuesto(budgetMaxInput);
+
+  if (valor === null) {
+    setBudgetMaxInput(String(budgetMax));
+    return;
+  }
+
+  if (valor > B_MAX) {
+    setBudgetMax(B_MAX);
+    setBudgetMaxInput(String(B_MAX));
+    mostrarMensajePresupuesto(`El presupuesto máximo no puede ser mayor a ${formatMXN(B_MAX)}.`);
+    return;
+  }
+
+  if (valor < B_MIN) {
+    setBudgetMax(B_MIN);
+    setBudgetMaxInput(String(B_MIN));
+    setBudgetMin(B_MIN);
+    setBudgetMinInput(String(B_MIN));
+    mostrarMensajePresupuesto(`El presupuesto máximo no puede ser menor a ${formatMXN(B_MIN)}.`);
+    return;
+  }
+
+  if (valor < budgetMin) {
+    setBudgetMax(valor);
+    setBudgetMin(valor);
+    setBudgetMaxInput(String(valor));
+    setBudgetMinInput(String(valor));
+    mostrarMensajePresupuesto("El máximo no puede ser menor que el mínimo. Ajustamos ambos valores.");
+    return;
+  }
+
+  setBudgetMax(valor);
+  setBudgetMaxInput(String(valor));
+};
+
+
+useEffect(() => {
+  setBudgetMinInput(String(budgetMin));
+}, [budgetMin]);
+
+useEffect(() => {
+  setBudgetMaxInput(String(budgetMax));
+}, [budgetMax]);
 
   /* Results state */
   const [state,        setState]        = useState("idle");   // idle | loading | results | empty
@@ -307,12 +404,12 @@ export default function Recomendador() {
   const [compareOpen,  setCompareOpen]  = useState(false);
   const [detailEquip,  setDetailEquip]  = useState(null);
   const [tooltip,      setTooltip]      = useState(null);
+  const [pesosPerfiles, setPesosPerfiles] = useState({});
+  const [cargandoPesos, setCargandoPesos] = useState(false);
 
   const resultsRef = useRef(null);
 
   /* Budget slider logic */
-  const B_MIN = 5000;
-  const B_MAX = 60000;
   const minPct = ((budgetMin - B_MIN) / (B_MAX - B_MIN)) * 100;
   const maxPct = ((budgetMax - B_MIN) / (B_MAX - B_MIN)) * 100;
 
@@ -330,26 +427,53 @@ export default function Recomendador() {
     setPrefs((p) => p.includes(key) ? p.filter((k) => k !== key) : [...p, key]);
 
   /* Generate */
-  const generate = () => {
-    if (!profile) return;
-    setState("loading");
-    setResults([]);
+  const generate = async () => {
+  if (!profile) return;
+
+  setState("loading");
+  setResults([]);
+
+  try {
+    const response = await fetch("http://localhost:3001/api/recomendaciones", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        perfil: profile,
+        presupuestoMin: budgetMin,
+        presupuestoMax: budgetMax,
+        preferencias: prefs,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Error del backend:", data);
+      setState("empty");
+      return;
+    }
+
+    if (!data.ranking || data.ranking.length === 0) {
+      setState("empty");
+      return;
+    }
+
+    setResults(data.ranking);
+    setState("results");
+
     setTimeout(() => {
-      const filtered = ALL_COMPUTERS.filter(
-        (c) => c.precio >= budgetMin && c.precio <= budgetMax
-      );
-      if (filtered.length === 0) {
-        setState("empty");
-      } else {
-        const scored = filtered
-          .map((c) => ({ ...c, finalScore: c.scores[profile] ?? 50 }))
-          .sort((a, b) => b.finalScore - a.finalScore);
-        setResults(scored);
-        setState("results");
-        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
-      }
-    }, 1600);
-  };
+      resultsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 80);
+  } catch (error) {
+    console.error("Error al conectar con el backend:", error);
+    setState("empty");
+  }
+};
 
   /* Compare */
   const toggleCompare = (equip) => {
@@ -362,8 +486,106 @@ export default function Recomendador() {
   const inCompare = (id) => compareList.some((e) => e.id === id);
   const compareBlocked = (id) => compareList.length >= 3 && !inCompare(id);
 
+  const toNumberOrNull = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+};
+
+const extraerGB = (texto = "") => {
+  const match = String(texto).match(/(\d+(?:\.\d+)?)\s*(TB|GB)/i);
+
+  if (!match) return null;
+
+  const valor = Number(match[1]);
+  const unidad = match[2].toUpperCase();
+
+  if (!Number.isFinite(valor)) return null;
+
+  return unidad === "TB" ? valor * 1024 : valor;
+};
+
+const obtenerGanadorUnico = (items, extractor, modo = "max") => {
+  const valores = items.map((item, index) => ({
+    index,
+    valor: extractor(item),
+  }));
+
+  const validos = valores.filter(
+    (item) =>
+      item.valor !== null &&
+      item.valor !== undefined &&
+      Number.isFinite(Number(item.valor))
+  );
+
+  if (validos.length < 2) return null;
+
+  const valoresNumericos = validos.map((item) => Number(item.valor));
+
+  const valorGanador =
+    modo === "min"
+      ? Math.min(...valoresNumericos)
+      : Math.max(...valoresNumericos);
+
+  const ganadores = validos.filter(
+    (item) => Number(item.valor) === valorGanador
+  );
+
+  // Si hay empate, no se pinta ninguno
+  if (ganadores.length !== 1) return null;
+
+  return ganadores[0].index;
+};
+
+const obtenerValorComparacion = (equipo, key) => {
+  switch (key) {
+    case "precio":
+      return toNumberOrNull(equipo.precio);
+
+    case "finalScore":
+      return toNumberOrNull(equipo.finalScore);
+
+    case "cpu":
+      return toNumberOrNull(equipo.detalles?.cpu?.score);
+
+    case "ram":
+      return (
+        toNumberOrNull(equipo.detalles?.ram?.capacidadGB) ??
+        extraerGB(equipo.ram)
+      );
+
+    case "gpu":
+      return toNumberOrNull(equipo.detalles?.gpu?.score);
+
+    case "almacenamiento":
+      return (
+        toNumberOrNull(equipo.detalles?.almacenamiento?.capacidadGB) ??
+        extraerGB(equipo.almacenamiento)
+      );
+
+    case "pantalla":
+      return toNumberOrNull(equipo.detalles?.pantalla?.score);
+
+    default:
+      return null;
+  }
+};
+
   /* Profile config object */
-  const profileCfg = PROFILES_CONFIG.find((p) => p.key === profile);
+  /* Profile config object */
+const profileCfg = PROFILES_CONFIG.find((p) => p.key === profile);
+
+const perfilKey = normalizarNombrePerfil(profile || "");
+const pesosDesdeBD = pesosPerfiles[perfilKey]?.pesos;
+const pesosFallback = normalizarPesosFrontend(profileCfg?.pesos || {});
+
+const pesosActuales =
+  pesosDesdeBD && Object.keys(pesosDesdeBD).length > 0
+    ? pesosDesdeBD
+    : pesosFallback;
+
+const pesosOrdenados = Object.entries(pesosActuales)
+  .filter(([, peso]) => Number(peso) > 0)
+  .sort((a, b) => Number(b[1]) - Number(a[1]));
 
   /* ── Render ── */
   return (
@@ -374,16 +596,20 @@ export default function Recomendador() {
       ══════════════════ */}
       <nav className={`rec-nav${scrolled ? " rec-nav--scrolled" : ""}`}>
         <div className="rec-nav__inner">
-          <Link to="/" className="rec-nav__logo">
-            <span className="rec-nav__logo-text">Smart<em>PC</em></span>
-          </Link>
+          <a href="#" className="nav__logo">
+            <img
+              src="/logo_only.svg"
+              alt="SmartPC"
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
+            />
+            <span className="nav__logo-text">Smart<em>PC</em></span>
+          </a>
 
           <ul className="rec-nav__links">
             {[
               { label: "Inicio",        to: "/" },
               { label: "Recomendador",  to: "/recomendador" },
-              { label: "Comparar",      to: "#comparar" },
-              { label: "Ayuda",         to: "#ayuda" },
+              { label: "Glosario técnico",      to: "/glosario" },
             ].map((l) => (
               <li key={l.label}>
                 {l.to.startsWith("/") && !l.to.startsWith("/#") ? (
@@ -406,7 +632,7 @@ export default function Recomendador() {
       {/* ══════════════════
           HERO SOBRIO
       ══════════════════ */}
-      <section className="rec-hero">
+      <section className="rec-hero" id="rec-hero">
         <div className="rec-hero__bg-grid" />
         <div className="rec-hero__content">
           <div className="rec-hero__tag">
@@ -426,7 +652,7 @@ export default function Recomendador() {
       {/* ══════════════════
           MAIN LAYOUT — 2 cols
       ══════════════════ */}
-      <section className="rec-main">
+      <section className="rec-main" >
 
         {/* ── LEFT: Config panel ── */}
         <div className="rec-config">
@@ -503,16 +729,64 @@ export default function Recomendador() {
               <div className="rec-budget">
                 <div className="rec-budget__labels">
                   <div className="rec-budget__val">
-                    <span className="rec-budget__val-label">Mínimo</span>
-                    <span className="rec-budget__val-num">{formatMXN(budgetMin)}</span>
+                    <label className="rec-budget__val-label" htmlFor="budget-min">
+                      Mínimo
+                    </label>
+
+                    <div className="rec-budget__input-wrap">
+                      <span>$</span>
+                      <input
+                          id="budget-min"
+                          className="rec-budget__input-number"
+                          type="text"
+                          inputMode="numeric"
+                          value={budgetMinInput}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/[^\d]/g, "");
+                            setBudgetMinInput(value);
+                          }}
+                          onBlur={validarBudgetMin}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.currentTarget.blur();
+                            }
+                          }}
+                        />
+                    </div>
                   </div>
                   <div className="rec-budget__sep">—</div>
                   <div className="rec-budget__val">
-                    <span className="rec-budget__val-label">Máximo</span>
-                    <span className="rec-budget__val-num">{formatMXN(budgetMax)}</span>
+                    <label className="rec-budget__val-label" htmlFor="budget-max">
+                      Máximo
+                    </label>
+
+                    <div className="rec-budget__input-wrap">
+                      <span>$</span>
+                      <input
+                        id="budget-max"
+                        className="rec-budget__input-number"
+                        type="text"
+                        inputMode="numeric"
+                        value={budgetMaxInput}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/[^\d]/g, "");
+                          setBudgetMaxInput(value);
+                        }}
+                        onBlur={validarBudgetMax}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.currentTarget.blur();
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-
+                {budgetMessage && (
+                  <div className="rec-budget__message">
+                    {budgetMessage}
+                  </div>
+                )}
                 <div className="rec-budget__slider-wrap">
                   <div className="rec-budget__track">
                     <div
@@ -522,14 +796,14 @@ export default function Recomendador() {
                   </div>
                   <input
                     type="range"
-                    min={B_MIN} max={B_MAX} step={500}
+                    min={B_MIN} max={B_MAX} step={B_STEP}
                     value={budgetMin}
                     onChange={handleMinSlider}
                     className="rec-budget__input rec-budget__input--min"
                   />
                   <input
                     type="range"
-                    min={B_MIN} max={B_MAX} step={500}
+                    min={B_MIN} max={B_MAX} step={B_STEP}
                     value={budgetMax}
                     onChange={handleMaxSlider}
                     className="rec-budget__input rec-budget__input--max"
@@ -605,13 +879,13 @@ export default function Recomendador() {
           <div className="rec-summary__block">
             <div className="rec-summary__label">Perfil seleccionado</div>
             {profile ? (
-              <div className="rec-summary__profile-badge">
-                {(() => { const Ic = Icon[PROFILES_CONFIG.find(p=>p.key===profile)?.icon]; return Ic && <Ic />; })()}
-                <span>{profile}</span>
-              </div>
+            <div className="rec-summary__profile-badge">
+              {(() => { const Ic = Icon[PROFILES_CONFIG.find(p=>p.key===profile)?.icon]; return Ic && <Ic />; })()}
+                <span>{profileCfg?.label || profile}</span>
+            </div>
             ) : (
               <div className="rec-summary__empty">Sin seleccionar</div>
-            )}
+              )}
           </div>
 
           <div className="rec-summary__block">
@@ -654,18 +928,44 @@ export default function Recomendador() {
             </div>
           )}
 
-          {profileCfg && (
+         {profileCfg && (
             <div className="rec-summary__pesos-block">
               <div className="rec-summary__label">Ponderación de componentes</div>
-              {Object.entries(profileCfg.pesos).map(([comp, pct]) => (
-                <div className="rec-summary__peso-row" key={comp}>
-                  <span className="rec-summary__peso-label">{comp}</span>
-                  <div className="rec-summary__peso-bar-wrap">
-                    <div className="rec-summary__peso-bar" style={{ width: `${pct}%` }} />
-                  </div>
-                  <span className="rec-summary__peso-pct">{pct}%</span>
+
+              {cargandoPesos && (
+                <div className="rec-summary__empty">
+                  Cargando pesos del perfil...
                 </div>
-              ))}
+              )}
+
+              {!cargandoPesos && pesosOrdenados.length > 0 && (
+                <>
+                  {pesosOrdenados.map(([comp, pct]) => (
+                    <div className="rec-summary__peso-row" key={comp}>
+                      <span className="rec-summary__peso-label">
+                        {formatearComponente(comp)}
+                      </span>
+
+                      <div className="rec-summary__peso-bar-wrap">
+                        <div
+                          className="rec-summary__peso-bar"
+                          style={{ width: `${Number(pct)}%` }}
+                        />
+                      </div>
+
+                      <span className="rec-summary__peso-pct">
+                        {Number(pct)}%
+                      </span>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {!cargandoPesos && pesosOrdenados.length === 0 && (
+                <div className="rec-summary__empty">
+                  No hay ponderaciones disponibles para este perfil.
+                </div>
+              )}
             </div>
           )}
 
@@ -714,7 +1014,7 @@ export default function Recomendador() {
               <h2 className="rec-results__title">Recomendaciones para ti</h2>
               <p className="rec-results__sub">
                 {results.length} equipo{results.length > 1 ? "s" : ""} dentro de tu presupuesto,
-                ordenados por compatibilidad con tu perfil <strong>{profile}</strong>.
+                ordenados por compatibilidad con tu perfil <strong>{profileCfg?.label || profile}</strong>.
               </p>
             </div>
 
@@ -834,7 +1134,7 @@ export default function Recomendador() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Tienda
+                            Ver en tienda
                           </a>
                         </div>
                       </div>
@@ -901,30 +1201,71 @@ export default function Recomendador() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { label: "Precio",          key: "precio",        fmt: (v) => formatMXN(v) },
-                    { label: "Score",            key: "finalScore",    fmt: (v) => `${v} / 100` },
-                    { label: "CPU",              key: "cpu" },
-                    { label: "RAM",              key: "ram" },
-                    { label: "GPU",              key: "gpu" },
-                    { label: "Almacenamiento",   key: "almacenamiento" },
-                    { label: "Pantalla",         key: "pantalla" },
-                  ].map((row) => (
+                {[
+                  {
+                    label: "Precio",
+                    key: "precio",
+                    modo: "min",
+                    fmt: (v) => formatMXN(v),
+                  },
+                  {
+                    label: "Score",
+                    key: "finalScore",
+                    modo: "max",
+                    fmt: (v) => `${v} / 100`,
+                  },
+                  {
+                    label: "CPU",
+                    key: "cpu",
+                    modo: "max",
+                  },
+                  {
+                    label: "RAM",
+                    key: "ram",
+                    modo: "max",
+                  },
+                  {
+                    label: "GPU",
+                    key: "gpu",
+                    modo: "max",
+                  },
+                  {
+                    label: "Almacenamiento",
+                    key: "almacenamiento",
+                    modo: "max",
+                  },
+                  {
+                    label: "Pantalla",
+                    key: "pantalla",
+                    modo: "max",
+                  },
+                ].map((row) => {
+                  const ganadorIndex = obtenerGanadorUnico(
+                    compareList,
+                    (equipo) => obtenerValorComparacion(equipo, row.key),
+                    row.modo
+                  );
+
+                  return (
                     <tr key={row.key}>
                       <td className="rec-compare-table__attr">{row.label}</td>
-                      {compareList.map((e) => {
-                        const rawVals = compareList.map((x) => x[row.key]);
-                        const isNum = typeof e[row.key] === "number";
-                        const isBest = isNum && e[row.key] === Math.max(...rawVals);
+
+                      {compareList.map((equipo, index) => {
+                        const esMejor = ganadorIndex === index;
+
                         return (
-                          <td key={e.id} className={isBest ? "rec-compare-table__best" : ""}>
-                            {row.fmt ? row.fmt(e[row.key]) : e[row.key]}
+                          <td
+                            key={equipo.id}
+                            className={esMejor ? "rec-compare-table__best" : ""}
+                          >
+                            {row.fmt ? row.fmt(equipo[row.key]) : equipo[row.key]}
                           </td>
                         );
                       })}
                     </tr>
-                  ))}
-                </tbody>
+                  );
+                })}
+              </tbody>
               </table>
             </div>
             <div className="rec-modal__footer">
@@ -941,95 +1282,134 @@ export default function Recomendador() {
           DETALLE MODAL
       ══════════════════ */}
       {detailEquip && (
-        <div className="rec-modal-overlay" onClick={() => setDetailEquip(null)}>
-          <div className="rec-modal rec-modal--detail" onClick={(e) => e.stopPropagation()}>
-            <div className="rec-modal__header">
-              <div>
-                <h3 className="rec-modal__title">{detailEquip.nombre}</h3>
-                <div className="rec-modal__price">{formatMXN(detailEquip.precio)}</div>
-              </div>
-              <button className="rec-modal__close" onClick={() => setDetailEquip(null)}>
-                <Icon.Close />
-              </button>
-            </div>
+  <div className="rec-modal-overlay" onClick={() => setDetailEquip(null)}>
+    <div className="rec-modal rec-modal--detail" onClick={(e) => e.stopPropagation()}>
+      <div className="rec-modal__header">
+        <div>
+          <h3 className="rec-modal__title">{detailEquip.nombre}</h3>
+          <div className="rec-modal__price">{formatMXN(detailEquip.precio)}</div>
+        </div>
+        <button className="rec-modal__close" onClick={() => setDetailEquip(null)}>
+          <Icon.Close />
+        </button>
+      </div>
 
-            <div className="rec-detail-body">
-              {/* Specs */}
-              <div className="rec-detail-specs">
-                <div className="rec-detail-specs__title">Especificaciones</div>
-                <div className="rec-detail-specs__grid">
-                  {[
-                    { icon: "Cpu",     label: "Procesador",      val: detailEquip.cpu,           glosKey: "CPU" },
-                    { icon: "Ram",     label: "Memoria RAM",     val: detailEquip.ram,           glosKey: "RAM" },
-                    { icon: "Gpu",     label: "Tarjeta gráfica", val: detailEquip.gpu,           glosKey: "GPU" },
-                    { icon: "Storage", label: "Almacenamiento",  val: detailEquip.almacenamiento, glosKey: "SSD" },
-                    { icon: "Screen",  label: "Pantalla",        val: detailEquip.pantalla,      glosKey: null },
-                  ].map(({ icon, label, val, glosKey }) => {
-                    const Ic = Icon[icon];
-                    return (
-                      <div className="rec-detail-spec-card" key={label}>
-                        <div className="rec-detail-spec-card__icon">{Ic && <Ic />}</div>
-                        <div className="rec-detail-spec-card__info">
-                          <div className="rec-detail-spec-card__label">
-                            {label}
-                            {glosKey && (
-                              <button
-                                className="rec-tooltip-trigger"
-                                onMouseEnter={() => setTooltip(glosKey)}
-                                onMouseLeave={() => setTooltip(null)}
-                              >
-                                <Icon.Info />
-                              </button>
-                            )}
-                          </div>
-                          <div className="rec-detail-spec-card__val">{val}</div>
-                          {tooltip === glosKey && glosKey && (
-                            <div className="rec-tooltip">
-                              <div className="rec-tooltip__title">{GLOSARIO[glosKey].titulo}</div>
-                              <div className="rec-tooltip__desc">{GLOSARIO[glosKey].desc}</div>
-                              <div className="rec-tooltip__ej">Ej: {GLOSARIO[glosKey].ejemplo}</div>
-                            </div>
-                          )}
-                        </div>
+      <div className="rec-detail-body">
+        {/* Specs */}
+        <div className="rec-detail-specs">
+          <div className="rec-detail-specs__title">Especificaciones</div>
+          <div className="rec-detail-specs__grid">
+            {[
+              { icon: "Cpu",     label: "Procesador",      val: detailEquip.cpu,             glosKey: "CPU" },
+              { icon: "Ram",     label: "Memoria RAM",     val: detailEquip.ram,             glosKey: "RAM" },
+              { icon: "Gpu",     label: "Tarjeta gráfica", val: detailEquip.gpu,             glosKey: "GPU" },
+              { icon: "Storage", label: "Almacenamiento",  val: detailEquip.almacenamiento,  glosKey: "SSD" },
+              { icon: "Screen",  label: "Pantalla",        val: detailEquip.pantalla,        glosKey: null },
+            ].map(({ icon, label, val, glosKey }) => {
+              const Ic = Icon[icon];
+              return (
+                <div className="rec-detail-spec-card" key={label}>
+                  <div className="rec-detail-spec-card__icon">{Ic && <Ic />}</div>
+                  <div className="rec-detail-spec-card__info">
+                    <div className="rec-detail-spec-card__label">
+                      {label}
+                      {glosKey && (
+                        <button
+                          className="rec-tooltip-trigger"
+                          onMouseEnter={() => setTooltip(glosKey)}
+                          onMouseLeave={() => setTooltip(null)}
+                        >
+                          <Icon.Info />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="rec-detail-spec-card__val">{val}</div>
+
+                    {tooltip === glosKey && glosKey && (
+                      <div className="rec-tooltip">
+                        <div className="rec-tooltip__title">{GLOSARIO[glosKey].titulo}</div>
+                        <div className="rec-tooltip__desc">{GLOSARIO[glosKey].desc}</div>
+                        <div className="rec-tooltip__ej">Ej: {GLOSARIO[glosKey].ejemplo}</div>
                       </div>
-                    );
-                  })}
+                    )}
+                  </div>
                 </div>
-              </div>
-
-              {/* Glosario accordion */}
-              <div className="rec-detail-glosario">
-                <div className="rec-detail-glosario__title">¿Qué significa cada componente?</div>
-                {Object.entries(GLOSARIO).map(([key, g]) => (
-                  <GlosarioItem key={key} g={g} />
-                ))}
-              </div>
-
-              {/* Fortalezas */}
-              <div className="rec-detail-fortalezas">
-                <div className="rec-detail-fortalezas__title">Puntos destacados</div>
-                <ul>
-                  {detailEquip.fortalezas.map((f) => (
-                    <li key={f}><Icon.Check />{f}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="rec-modal__footer">
-              <button className="rec-btn-ghost" onClick={() => setDetailEquip(null)}>Cerrar</button>
-              <a
-                className="rec-btn-primary"
-                href={detailEquip.linkTienda}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Ver en tienda <Icon.External />
-              </a>
-            </div>
+              );
+            })}
           </div>
         </div>
-      )}
+
+        {/* Análisis SmartPC */}
+        <div className="rec-detail-analysis">
+          <div className="rec-detail-analysis__title">Análisis SmartPC</div>
+          <p className="rec-detail-analysis__text">
+            {generarAnalisisEquipo(detailEquip)}
+          </p>
+        </div>
+
+        {/* Puntos personalizados */}
+        <div className="rec-detail-insights">
+          <div className="rec-detail-insights__group">
+            <div className="rec-detail-insights__title">Puntos destacados</div>
+
+            <ul className="rec-detail-list rec-detail-list--positive">
+              {generarPuntosDestacados(detailEquip).map((punto) => (
+                <li key={punto}>
+                  <Icon.Check />
+                  <span>{punto}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rec-detail-insights__group">
+            <div className="rec-detail-insights__title">Puntos a considerar</div>
+
+            <ul className="rec-detail-list rec-detail-list--warning">
+              {generarPuntosConsiderar(detailEquip).map((punto) => (
+                <li key={punto}>
+                  <Icon.Info />
+                  <span>{punto}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Acceso al glosario */}
+        <div className="rec-detail-glossary-link">
+          <div>
+            <strong>¿No entiendes algún componente?</strong>
+            <p>
+              Consulta el glosario técnico para conocer qué significa CPU, GPU, RAM,
+              SSD, resolución, frecuencia de pantalla y otros conceptos importantes.
+            </p>
+          </div>
+
+          <Link to="/glosario" className="rec-detail-glossary-link__btn">
+            Ver glosario técnico
+          </Link>
+        </div>
+      </div>
+
+      <div className="rec-modal__footer">
+        <button className="rec-btn-ghost" onClick={() => setDetailEquip(null)}>
+          Cerrar
+        </button>
+
+        <a
+          className="rec-btn-primary"
+          href={detailEquip.linkTienda}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver en tienda <Icon.External />
+        </a>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* ══════════════════
           FOOTER
@@ -1039,6 +1419,11 @@ export default function Recomendador() {
           <div className="footer__top">
             <div className="footer__brand">
               <div className="footer__logo">
+                <img
+                  src="/logo.svg"
+                  alt="SmartPC"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
                 <span className="footer__logo-text">Smart<em>PC</em></span>
               </div>
               <p className="footer__tagline">
@@ -1050,36 +1435,21 @@ export default function Recomendador() {
               <div className="footer__col">
                 <div className="footer__col-title">Plataforma</div>
                 <div className="footer__col-links">
-                  {["Inicio", "Recomendador", "Comparador", "Glosario"].map((l) => (
-                    <a key={l} href="#">{l}</a>
-                  ))}
+                  <Link to="/">Inicio</Link>
+                  <a href="#rec-hero">Recomendador</a>
+                  <Link to="/glosario">Glosario técnico</Link>
                 </div>
               </div>
-              <div className="footer__col">
-                <div className="footer__col-title">Perfiles</div>
-                <div className="footer__col-links">
-                  {["Gaming", "Programación", "Diseño", "Oficina"].map((l) => (
-                    <a key={l} href="#">{l}</a>
-                  ))}
-                </div>
-              </div>
-              <div className="footer__col">
-                <div className="footer__col-title">Soporte</div>
-                <div className="footer__col-links">
-                  {["Guía de compra", "Contacto", "Ayuda"].map((l) => (
-                    <a key={l} href="#">{l}</a>
-                  ))}
-                </div>
-              </div>
+              
             </div>
           </div>
           <div className="footer__divider" />
           <div className="footer__bottom">
-            <span className="footer__copy">© 2026 SmartPC. Todos los derechos reservados.</span>
+            <span className="footer__copy">© {new Date().getFullYear()} SmartPC. Todos los derechos reservados.</span>
             <div className="footer__legal">
-              <a href="#">Aviso de privacidad</a>
+              <Link to="/aviso-privacidad">Aviso de privacidad</Link>
               <span className="footer__legal-sep" />
-              <a href="#">Términos de uso</a>
+              <Link to="/terminos-uso">Términos de uso</Link>
             </div>
           </div>
         </div>
@@ -1108,4 +1478,166 @@ function GlosarioItem({ g }) {
       )}
     </div>
   );
+}
+
+/* ─── Funciones de Análisis de equipos ── */
+
+function generarAnalisisEquipo(equipo) {
+  const cpu = equipo.detalles?.cpu;
+  const gpu = equipo.detalles?.gpu;
+  const ram = equipo.detalles?.ram;
+  const almacenamiento = equipo.detalles?.almacenamiento;
+  const pantalla = equipo.detalles?.pantalla;
+
+  const cpuModelo = cpu?.modelo || equipo.cpu || "procesador no especificado";
+  const gpuModelo = gpu?.modelo || equipo.gpu || "gráficos no especificados";
+  const ramGB = ram?.capacidadGB;
+  const almacenamientoGB = almacenamiento?.capacidadGB;
+  const pantallaTexto = equipo.pantalla || "pantalla no especificada";
+
+  const partes = [];
+
+  // CPU + GPU como lectura principal
+  if ((gpu?.score || 0) >= 85 && (cpu?.score || 0) >= 80) {
+    partes.push(
+      `Este equipo destaca por la combinación de ${cpuModelo} con ${gpuModelo}, lo que lo hace una opción fuerte para gaming, diseño, renderizado y tareas gráficas exigentes`
+    );
+  } else if ((gpu?.score || 0) >= 75) {
+    partes.push(
+      `Su ${gpuModelo} le da una ventaja clara en tareas gráficas, juegos y software que aprovecha aceleración por GPU`
+    );
+  } else if ((cpu?.score || 0) >= 80) {
+    partes.push(
+      `Su ${cpuModelo} es uno de sus puntos más fuertes, ideal para multitarea, programación, edición ligera y trabajo exigente`
+    );
+  } else {
+    partes.push(
+      `Este equipo ofrece una configuración equilibrada para uso general, estudio, oficina y tareas cotidianas`
+    );
+  }
+
+  // RAM
+  if (ramGB >= 32) {
+    partes.push(
+      `Sus ${ramGB} GB de RAM son una ventaja importante para multitarea pesada, proyectos grandes, edición y trabajo creativo`
+    );
+  } else if (ramGB >= 16) {
+    partes.push(
+      `Sus ${ramGB} GB de RAM son adecuados para la mayoría de usos actuales, incluyendo multitarea, gaming y productividad`
+    );
+  } else if (ramGB) {
+    partes.push(
+      `Sus ${ramGB} GB de RAM son suficientes para tareas básicas, aunque pueden quedarse cortos para multitarea pesada o software exigente`
+    );
+  }
+
+  // Almacenamiento
+  if (almacenamientoGB >= 1024) {
+    partes.push(
+      `El almacenamiento de 1 TB permite guardar más juegos, programas y archivos pesados sin depender tan pronto de una expansión`
+    );
+  } else if (almacenamientoGB >= 512) {
+    partes.push(
+      `El SSD de 512 GB es rápido y funcional, aunque puede quedarse corto si instalas muchos juegos o manejas archivos grandes`
+    );
+  }
+
+  // Pantalla
+  if ((pantalla?.score || 0) >= 80) {
+    partes.push(
+      `Su pantalla (${pantallaTexto}) es mejor que el promedio del catálogo y aporta más comodidad visual`
+    );
+  } else if (pantallaTexto && pantallaTexto.includes("60 Hz")) {
+    partes.push(
+      `Su pantalla (${pantallaTexto}) cumple para uso general, aunque no destaca especialmente para gaming competitivo`
+    );
+  }
+
+  return `${partes.join(". ")}.`;
+}
+
+/*   Puntos Destacados   */
+
+function generarPuntosDestacados(equipo) {
+  const puntos = [];
+
+  const cpu = equipo.detalles?.cpu;
+  const gpu = equipo.detalles?.gpu;
+  const ram = equipo.detalles?.ram;
+  const almacenamiento = equipo.detalles?.almacenamiento;
+  const pantalla = equipo.detalles?.pantalla;
+
+  if ((gpu?.score || 0) >= 85) {
+    puntos.push(`${gpu.modelo} ofrece rendimiento gráfico alto para gaming, diseño o renderizado.`);
+  } else if ((gpu?.score || 0) >= 75) {
+    puntos.push(`${gpu.modelo} es una GPU dedicada competente para juegos y tareas gráficas.`);
+  }
+
+  if ((cpu?.score || 0) >= 85) {
+    puntos.push(`${cpu.modelo} aporta buen rendimiento para cargas pesadas y multitarea.`);
+  } else if ((cpu?.score || 0) >= 75) {
+    puntos.push(`${cpu.modelo} ofrece rendimiento sólido para uso diario, estudio y productividad.`);
+  }
+
+  if ((ram?.capacidadGB || 0) >= 32) {
+    puntos.push(`${ram.capacidadGB} GB de RAM ayudan mucho en multitarea avanzada y proyectos grandes.`);
+  } else if ((ram?.capacidadGB || 0) >= 16) {
+    puntos.push(`${ram.capacidadGB} GB de RAM son adecuados para la mayoría de usuarios actuales.`);
+  }
+
+  if ((almacenamiento?.capacidadGB || 0) >= 1024) {
+    puntos.push(`1 TB de almacenamiento permite instalar más programas, juegos y guardar archivos pesados.`);
+  }
+
+  if ((pantalla?.score || 0) >= 80) {
+    puntos.push(`La pantalla tiene mejor resolución/calidad que otras opciones del catálogo.`);
+  }
+
+  if (puntos.length === 0) {
+    puntos.push("Configuración suficiente para tareas generales y uso cotidiano.");
+  }
+
+  return puntos;
+}
+
+
+/*   Puntos a considerar   */
+
+function generarPuntosConsiderar(equipo) {
+  const puntos = [];
+
+  const gpu = equipo.detalles?.gpu;
+  const ram = equipo.detalles?.ram;
+  const almacenamiento = equipo.detalles?.almacenamiento;
+  const pantalla = equipo.detalles?.pantalla;
+
+  if ((ram?.capacidadGB || 0) < 16) {
+    puntos.push("La RAM puede quedarse corta para multitarea pesada, edición o juegos recientes.");
+  }
+
+  if ((almacenamiento?.capacidadGB || 0) < 1024) {
+    puntos.push("El almacenamiento de 512 GB puede llenarse rápido si instalas varios juegos o trabajas con archivos grandes.");
+  }
+
+  if ((gpu?.score || 0) < 70) {
+    puntos.push("No es la mejor opción para gaming exigente, renderizado avanzado o tareas gráficas pesadas.");
+  }
+
+  if ((pantalla?.hz || 60) <= 60) {
+    puntos.push("La pantalla de 60 Hz cumple, pero no destaca para gaming competitivo.");
+  }
+
+  if ((pantalla?.score || 0) < 70) {
+    puntos.push("La pantalla es funcional, pero no es ideal si buscas alta fidelidad visual o mucha área de trabajo.");
+  }
+
+  if (Number(equipo.precio) >= 22000) {
+    puntos.push("Su precio es alto, por lo que conviene si realmente necesitas su rendimiento.");
+  }
+
+  if (puntos.length === 0) {
+    puntos.push("No presenta limitaciones importantes dentro de su rango de precio.");
+  }
+
+  return puntos;
 }

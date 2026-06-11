@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: smartpc_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: smartpc_root
+      MYSQL_DATABASE: smartpc_db
+      MYSQL_USER: smartpc_user
+      MYSQL_PASSWORD: smartpc_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - smartpc_mysql_data:/var/lib/mysql
+      - ./databases/smartpc_db.sql:/docker-entrypoint-initdb.d/smartpc_db.sql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: smartpc_backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DB_HOST: mysql
+      DB_USER: smartpc_user
+      DB_PASSWORD: smartpc_pass
+      DB_NAME: smartpc_db
+      DB_PORT: 3306
+      PORT: 3001
+      ADMIN_KEY: smartpc2026
+    depends_on:
+      - mysql
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: smartpc_frontend
+    restart: always
+    ports:
+      - "5174:80"
+    depends_on:
+      - backend
+
+volumes:
+  smartpc_mysql_data:

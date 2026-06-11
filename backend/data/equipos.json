@@ -1,0 +1,290 @@
+[
+  {
+    "id": 1,
+    "nombre": "Lenovo LOQ 15",
+    "precio": 22499,
+    "marca": "Lenovo",
+    "categoria": "Gaming",
+    "cpu": {
+      "modelo": "Intel Core i5-13420H",
+      "score": 78
+    },
+    "ram": {
+      "capacidadGB": 16,
+      "tipo": "DDR5",
+      "score": 85
+    },
+    "gpu": {
+      "modelo": "NVIDIA RTX 4060 8 GB",
+      "tipo": "dedicada",
+      "vramGB": 8,
+      "score": 88
+    },
+    "almacenamiento": {
+      "capacidadGB": 512,
+      "tipo": "NVMe SSD",
+      "score": 80
+    },
+    "pantalla": {
+      "tamano": "15.6 pulgadas",
+      "resolucion": "FHD",
+      "hz": 144,
+      "tipo": "IPS",
+      "score": 82
+    },
+    "bateria": {
+      "score": 60
+    },
+    "portabilidad": {
+      "pesoKG": 2.4,
+      "score": 55
+    },
+    "descripcion": "Equilibrio ideal entre rendimiento y precio para gaming competitivo y desarrollo.",
+    "fortalezas": [
+      "Excelente relación precio-rendimiento",
+      "GPU RTX 4060 de buen rendimiento",
+      "Pantalla de alta frecuencia de refresco"
+    ],
+    "linkTienda": "https://www.lenovo.com/mx"
+  },
+  {
+    "id": 2,
+    "nombre": "ASUS TUF Gaming A15",
+    "precio": 27999,
+    "marca": "ASUS",
+    "categoria": "Gaming",
+    "cpu": {
+      "modelo": "AMD Ryzen 7 7745HX",
+      "score": 90
+    },
+    "ram": {
+      "capacidadGB": 16,
+      "tipo": "DDR5",
+      "score": 85
+    },
+    "gpu": {
+      "modelo": "NVIDIA RTX 4070 8 GB",
+      "tipo": "dedicada",
+      "vramGB": 8,
+      "score": 95
+    },
+    "almacenamiento": {
+      "capacidadGB": 1024,
+      "tipo": "NVMe SSD",
+      "score": 92
+    },
+    "pantalla": {
+      "tamano": "15.6 pulgadas",
+      "resolucion": "FHD",
+      "hz": 144,
+      "tipo": "IPS",
+      "score": 82
+    },
+    "bateria": {
+      "score": 55
+    },
+    "portabilidad": {
+      "pesoKG": 2.3,
+      "score": 58
+    },
+    "descripcion": "Potencia alta para gaming exigente y tareas creativas pesadas.",
+    "fortalezas": [
+      "GPU RTX 4070 para gaming de alto nivel",
+      "Procesador AMD potente",
+      "1 TB de almacenamiento"
+    ],
+    "linkTienda": "https://www.asus.com/mx"
+  },
+  {
+    "id": 3,
+    "nombre": "HP Victus 15",
+    "precio": 17999,
+    "marca": "HP",
+    "categoria": "Gaming",
+    "cpu": {
+      "modelo": "Intel Core i5-12450H",
+      "score": 72
+    },
+    "ram": {
+      "capacidadGB": 8,
+      "tipo": "DDR4",
+      "score": 55
+    },
+    "gpu": {
+      "modelo": "NVIDIA RTX 3050 4 GB",
+      "tipo": "dedicada",
+      "vramGB": 4,
+      "score": 65
+    },
+    "almacenamiento": {
+      "capacidadGB": 256,
+      "tipo": "NVMe SSD",
+      "score": 58
+    },
+    "pantalla": {
+      "tamano": "15.6 pulgadas",
+      "resolucion": "FHD",
+      "hz": 144,
+      "tipo": "IPS",
+      "score": 78
+    },
+    "bateria": {
+      "score": 62
+    },
+    "portabilidad": {
+      "pesoKG": 2.2,
+      "score": 62
+    },
+    "descripcion": "Opción accesible para entrar al gaming con GPU dedicada.",
+    "fortalezas": [
+      "Precio accesible",
+      "GPU dedicada",
+      "Pantalla 144 Hz"
+    ],
+    "linkTienda": "https://www.hp.com/mx"
+  },
+  {
+    "id": 4,
+    "nombre": "MacBook Air M3",
+    "precio": 34999,
+    "marca": "Apple",
+    "categoria": "Ultrabook",
+    "cpu": {
+      "modelo": "Apple M3 8 núcleos",
+      "score": 88
+    },
+    "ram": {
+      "capacidadGB": 8,
+      "tipo": "Unificada",
+      "score": 68
+    },
+    "gpu": {
+      "modelo": "Apple GPU 10 núcleos",
+      "tipo": "integrada",
+      "vramGB": 0,
+      "score": 72
+    },
+    "almacenamiento": {
+      "capacidadGB": 256,
+      "tipo": "SSD",
+      "score": 60
+    },
+    "pantalla": {
+      "tamano": "13.6 pulgadas",
+      "resolucion": "Liquid Retina 2560x1664",
+      "hz": 60,
+      "tipo": "Retina",
+      "score": 96
+    },
+    "bateria": {
+      "score": 98
+    },
+    "portabilidad": {
+      "pesoKG": 1.24,
+      "score": 96
+    },
+    "descripcion": "Equipo premium para diseño ligero, programación y oficina con gran batería.",
+    "fortalezas": [
+      "Pantalla de excelente calidad",
+      "Gran autonomía",
+      "Muy buena portabilidad"
+    ],
+    "linkTienda": "https://www.apple.com/mx"
+  },
+  {
+    "id": 5,
+    "nombre": "Dell Inspiron 15",
+    "precio": 14999,
+    "marca": "Dell",
+    "categoria": "Oficina",
+    "cpu": {
+      "modelo": "Intel Core i5-1335U",
+      "score": 70
+    },
+    "ram": {
+      "capacidadGB": 16,
+      "tipo": "DDR4",
+      "score": 78
+    },
+    "gpu": {
+      "modelo": "Intel Iris Xe Graphics",
+      "tipo": "integrada",
+      "vramGB": 0,
+      "score": 45
+    },
+    "almacenamiento": {
+      "capacidadGB": 512,
+      "tipo": "SSD",
+      "score": 75
+    },
+    "pantalla": {
+      "tamano": "15.6 pulgadas",
+      "resolucion": "FHD",
+      "hz": 60,
+      "tipo": "IPS",
+      "score": 68
+    },
+    "bateria": {
+      "score": 78
+    },
+    "portabilidad": {
+      "pesoKG": 1.7,
+      "score": 78
+    },
+    "descripcion": "Equipo equilibrado para oficina, clases y productividad diaria.",
+    "fortalezas": [
+      "Buen precio",
+      "16 GB de RAM",
+      "Adecuada para productividad"
+    ],
+    "linkTienda": "https://www.dell.com/mx"
+  },
+  {
+    "id": 6,
+    "nombre": "Lenovo ThinkPad E15",
+    "precio": 19999,
+    "marca": "Lenovo",
+    "categoria": "Productividad",
+    "cpu": {
+      "modelo": "AMD Ryzen 5 5600U",
+      "score": 74
+    },
+    "ram": {
+      "capacidadGB": 16,
+      "tipo": "DDR4",
+      "score": 78
+    },
+    "gpu": {
+      "modelo": "AMD Radeon Integrated",
+      "tipo": "integrada",
+      "vramGB": 0,
+      "score": 42
+    },
+    "almacenamiento": {
+      "capacidadGB": 512,
+      "tipo": "NVMe SSD",
+      "score": 80
+    },
+    "pantalla": {
+      "tamano": "15.6 pulgadas",
+      "resolucion": "FHD",
+      "hz": 60,
+      "tipo": "IPS Anti-glare",
+      "score": 72
+    },
+    "bateria": {
+      "score": 82
+    },
+    "portabilidad": {
+      "pesoKG": 1.9,
+      "score": 72
+    },
+    "descripcion": "Equipo sólido para programación, oficina y productividad empresarial.",
+    "fortalezas": [
+      "Teclado cómodo",
+      "Buena durabilidad",
+      "Buen balance para programación"
+    ],
+    "linkTienda": "https://www.lenovo.com/mx"
+  }
+]

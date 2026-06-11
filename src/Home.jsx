@@ -176,11 +176,9 @@ export default function Home() {
           </a>
 
           <ul className="nav__links">
-            {["Inicio", "Funciones", "Cómo funciona", "Perfiles"].map((l) => (
-              <li key={l}>
-                <a href={`#${normalizeLink(l)}`}>{l}</a>
-              </li>
-            ))}
+            <li><a href="#inicio">Inicio</a></li>
+            <li><Link to="/recomendador">Recomendador</Link></li>
+            <li><Link to="/glosario">Glosario técnico</Link></li>
           </ul>
 
           <div className="nav__right">
@@ -217,12 +215,8 @@ export default function Home() {
           </p>
 
           <div className="hero__actions anim d3">
-            <Link to="/recomendador" className="btn-primary btn-primary--hero">
-               Encontrar mi PC <Icon.Arrow />
-            </Link>
-
             <a href="#como-funciona" className="btn-ghost btn-ghost--hero">
-             Ver cómo funciona
+             Conocer el proceso
             </a>
           </div>
         </div>
@@ -236,7 +230,7 @@ export default function Home() {
               <div className="config-panel__hd-icon"><Icon.Config /></div>
               <div>
                 <div className="config-panel__title">Configurador rápido</div>
-                <div className="config-panel__subtitle">Empieza tu búsqueda aquí</div>
+                <div className="config-panel__subtitle">Vista previa del flujo</div>
               </div>
             </div>
 
@@ -272,19 +266,15 @@ export default function Home() {
                 background: `linear-gradient(to right, var(--c-teal) ${budgetPct}%, var(--bd-2) ${budgetPct}%)`,
               }}
             />
-
-            <button className="config-panel__cta">
-              Ver recomendaciones <Icon.Arrow />
-            </button>
           </div>
 
           {/* Result mockup panel */}
           <div className="result-panel">
             <div className="result-panel__header">
-              <span className="result-panel__label">Tu PC recomendada</span>
+              <span className="result-panel__label">Ejemplo de recomendación</span>
               <div className="result-panel__badge">
                 <span className="result-panel__badge-dot" />
-                Análisis activo
+                Vista previa
               </div>
             </div>
 
@@ -346,7 +336,7 @@ export default function Home() {
       <section className="section section--alt" id="funciones">
         <div className="section__inner">
           <div className="section__eyebrow">Funcionalidades</div>
-          <h2 className="section__title">Todo lo que necesitas para <i>elegir bien</i></h2>
+          <h2 className="section__title">Lo que SmartPC <i>analiza por ti</i></h2>
           <p className="section__desc">
             Un conjunto de herramientas diseñadas para que la decisión de comprar
             una computadora sea clara, rápida y sin estrés.
@@ -373,7 +363,7 @@ export default function Home() {
       <section className="section section--dark" id="como-funciona">
         <div className="section__inner">
           <div className="section__eyebrow">Proceso</div>
-          <h2 className="section__title">En 4 pasos encuentras tu <i>PC ideal</i></h2>
+          <h2 className="section__title">De tus necesidades a una <i>recomendación clara</i></h2>
           <p className="section__desc">
             Sin crear cuenta, sin complicaciones. Responde unas preguntas
             y deja que SmartPC trabaje por ti.
@@ -396,7 +386,7 @@ export default function Home() {
       <section className="section section--white" id="perfiles">
         <div className="section__inner">
           <div className="section__eyebrow">Perfiles de uso</div>
-          <h2 className="section__title">¿Cuál es tu <i>tipo de usuario?</i></h2>
+          <h2 className="section__title">Recomendaciones según tu <i>forma de usar la computadora</i></h2>
           <p className="section__desc">
             Cada perfil prioriza las especificaciones que realmente importan
             para tu forma de trabajar o jugar.
@@ -474,41 +464,31 @@ export default function Home() {
             <div className="footer__cols">
               <div className="footer__col">
                 <div className="footer__col-title">Plataforma</div>
-                <div className="footer__col-links">
-                  {["Inicio", "Funciones", "Comparador de equipos", "Glosario técnico"].map((l) => (
-                    <a key={l} href="#">{l}</a>
-                  ))}
-                </div>
-              </div>
-              <div className="footer__col">
-                <div className="footer__col-title">Perfiles</div>
-                <div className="footer__col-links">
-                  {["Gaming", "Programación", "Diseño", "Oficina"].map((l) => (
-                    <a key={l} href="#">{l}</a>
-                  ))}
-                </div>
-              </div>
-              <div className="footer__col">
-                <div className="footer__col-title">Soporte</div>
-                <div className="footer__col-links">
-                  {["Guía de compra", "Recomendaciones inteligentes", "Contacto", "Ayuda"].map((l) => (
-                    <a key={l} href="#">{l}</a>
-                  ))}
-                </div>
+                   <div className="footer__col-links">
+                    <a href="#inicio">Inicio</a>
+                    <Link to="/recomendador">Recomendador</Link>
+                    <Link to="/glosario">Glosario técnico</Link>
               </div>
             </div>
+              
+
+              <div className="footer__col">
+                 <div className="footer__col-title">Administración</div>
+                   <div className="footer__col-links">
+                       <Link to="/admin/scraping">Panel Admin</Link>
+                  </div>
+                </div>
+              </div>
           </div>
 
           <div className="footer__divider" />
 
           <div className="footer__bottom">
-            <span className="footer__copy">© 2026 SmartPC. Todos los derechos reservados.</span>
+            <span className="footer__copy">© {new Date().getFullYear()} SmartPC. Todos los derechos reservados.</span>
             <div className="footer__legal">
-              <a href="#">Aviso de privacidad</a>
+              <Link to="/aviso-privacidad">Aviso de privacidad</Link>
               <span className="footer__legal-sep" />
-              <a href="#">Términos de uso</a>
-              <span className="footer__legal-sep" />
-              <a href="#">Soporte</a>
+              <Link to="/terminos-uso">Términos de uso</Link>
             </div>
           </div>
         </div>
