@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./AdminScraping.css";
+import { API_URL } from "../../config/api";
 
 /* ─────────────────────────────────────────────────────
    CONFIG — cambia aquí la URL base del backend
 ───────────────────────────────────────────────────── */
-const API_BASE = "http://localhost:3001/api/scraping";
+const API_BASE = `${API_URL}/api/scraping`;
 
 /* ─────────────────────────────────────────────────────
    Helpers

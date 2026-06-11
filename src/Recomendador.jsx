@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./Recomendador.css";
+import { API_URL } from "./config/api";
 
 /* ─────────────────────────────────────────────────────
    SVG Icons
@@ -121,7 +122,7 @@ const Icon = {
 const formatMXN = (n) =>
   new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
 
-const API_BASE = "http://localhost:3001/api";
+const API_BASE = `${API_URL}/api`;
 
 const normalizarNombrePerfil = (nombre = "") =>
   String(nombre)
@@ -434,7 +435,7 @@ useEffect(() => {
   setResults([]);
 
   try {
-    const response = await fetch("http://localhost:3001/api/recomendaciones", {
+    const response = await fetch(`${API_URL}/api/recomendaciones`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

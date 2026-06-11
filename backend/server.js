@@ -22,11 +22,36 @@ const {
 const { convertirProductoAEquipo } = require("./services/catalogoService");
 const { verificarAdmin } = require("./middlewares/adminAuth");
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
 
 
 // Middlewares
-app.use(cors());
+const normalizeOrigin = (url) => url?.replace(/\/$/, "");
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  process.env.FRONTEND_URL,
+]
+  .filter(Boolean)
+  .map(normalizeOrigin);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const cleanOrigin = normalizeOrigin(origin);
+
+      if (!cleanOrigin || allowedOrigins.includes(cleanOrigin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Origen no permitido por CORS"));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Ruta de prueba
@@ -255,7 +280,7 @@ app.get("/api/perfiles/:nombre/pesos", async (req, res) => {
 });
 
 // Iniciar servidor
+
 app.listen(PORT, () => {
-  console.log(`Servidor SmartPC corriendo en http://localhost:${PORT}`);
-  iniciarSchedulerScraping();
+  console.log(`Servidor SmartPC corriendo en puerto ${PORT}`);
 });
