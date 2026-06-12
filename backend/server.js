@@ -42,12 +42,16 @@ app.use(
     origin: (origin, callback) => {
       const cleanOrigin = normalizeOrigin(origin);
 
-      if (!cleanOrigin || allowedOrigins.includes(cleanOrigin)) {
+      if (
+        !cleanOrigin ||
+        allowedOrigins.includes(cleanOrigin) ||
+        cleanOrigin.endsWith(".up.railway.app")
+      ) {
         callback(null, true);
         return;
       }
 
-      callback(new Error("Origen no permitido por CORS"));
+      callback(new Error(`Origen no permitido por CORS: ${cleanOrigin}`));
     },
     credentials: true,
   })
