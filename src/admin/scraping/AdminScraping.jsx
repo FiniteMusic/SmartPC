@@ -361,6 +361,7 @@ export default function AdminScraping() {
         if (estado) {
           const resAll = await fetch(`${API_BASE}/productos`, {
             headers: getAdminHeaders(),
+            "x-admin-key": adminKey,
           });
 
           const dataAll = await resAll.json();
