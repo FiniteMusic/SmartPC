@@ -12,31 +12,40 @@ https://smartpc-frontend-production.up.railway.app/
 
 ### Landing principal
 
-![Landing principal de SmartPC](docs/screenshots/home.png)
+<img width="1903" height="915" alt="image" src="https://github.com/user-attachments/assets/57f25cd2-9f4f-4a73-890b-16b2cb79d173" />
 
 ### Recomendador
 
-![Pantalla del recomendador](docs/screenshots/recomendador.png)
+<img width="1896" height="915" alt="image" src="https://github.com/user-attachments/assets/3c7be277-5894-4d96-9c1f-07f00d07b596" />
+<img width="1900" height="912" alt="image" src="https://github.com/user-attachments/assets/7bc31ee4-353d-45ad-b17d-59138eeb1c09" />
+<img width="1898" height="922" alt="image" src="https://github.com/user-attachments/assets/871a9fe1-d995-4e2c-a8be-9cff13a74e46" />
 
 ### Resultados de recomendación
 
-![Resultados del recomendador](docs/screenshots/resultados.png)
+<img width="1898" height="917" alt="image" src="https://github.com/user-attachments/assets/a9f74c93-9933-45fc-9268-d6adbcd7cb8a" />
+<img width="1894" height="931" alt="image" src="https://github.com/user-attachments/assets/0982e460-4284-4497-961d-f0a20a5e2d82" />
 
 ### Comparador de equipos
 
-![Comparador de equipos](docs/screenshots/comparador.png)
+<img width="1918" height="922" alt="image" src="https://github.com/user-attachments/assets/9cfded1b-f438-4ddf-9d9c-11c422f31412" />
 
 ### Detalles del equipo
 
-![Modal de detalles del equipo](docs/screenshots/detalles.png)
+<img width="1898" height="912" alt="image" src="https://github.com/user-attachments/assets/ffeea8dd-e8d7-4219-8ff8-9508f967d5cf" />
+<img width="1919" height="913" alt="image" src="https://github.com/user-attachments/assets/561bd921-516b-405b-a168-65d2f10c8470" />
+<img width="1897" height="915" alt="image" src="https://github.com/user-attachments/assets/b3c3d6fb-ab21-43aa-aeff-7593bd29b85b" />
+<img width="1898" height="919" alt="image" src="https://github.com/user-attachments/assets/26152880-a8ba-435a-a186-0fa2d381c1e7" />
+
 
 ### Glosario técnico
 
-![Glosario técnico](docs/screenshots/glosario.png)
+<img width="1896" height="925" alt="image" src="https://github.com/user-attachments/assets/ff54a5f4-eb52-4091-8939-a740ab0fac24" />
+
 
 ### Panel administrativo
 
-![Panel administrativo de scraping](docs/screenshots/admin.png)
+<img width="1894" height="915" alt="image" src="https://github.com/user-attachments/assets/4d8094b1-f04f-4b60-aa51-5c289b86201d" />
+
 ## Descripción general
 
 SmartPC permite seleccionar un perfil de uso, definir un rango de presupuesto y agregar preferencias adicionales para obtener recomendaciones de computadoras. El sistema no vende productos directamente; únicamente orienta al usuario mediante análisis técnico y redirección a tiendas externas donde los equipos fueron encontrados.
