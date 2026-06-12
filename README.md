@@ -40,6 +40,9 @@ https://smartpc-frontend-production.up.railway.app/
 ### Glosario técnico
 
 <img width="1896" height="925" alt="image" src="https://github.com/user-attachments/assets/ff54a5f4-eb52-4091-8939-a740ab0fac24" />
+<img width="1894" height="922" alt="image" src="https://github.com/user-attachments/assets/db0a912b-f828-4436-b32b-c554a699cee1" />
+<img width="1900" height="923" alt="image" src="https://github.com/user-attachments/assets/e03ee687-b5a7-4516-a20b-4fae1e604006" />
+<img width="1899" height="909" alt="image" src="https://github.com/user-attachments/assets/198ed676-2248-4f36-92bf-df9ac93809a6" />
 
 
 ### Panel administrativo
