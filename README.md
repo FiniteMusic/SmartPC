@@ -252,7 +252,7 @@ DB_PASSWORD=
 DB_NAME=smartpc_db
 DB_PORT=3306
 PORT=3001
-ADMIN_KEY=smartpc2026
+ADMIN_KEY=<tu_clave_admin>
 ```
 
 Ajusta los valores según tu configuración local de MySQL.
@@ -392,7 +392,7 @@ DB_PORT=${{MySQL.MYSQLPORT}}
 DB_USER=${{MySQL.MYSQLUSER}}
 DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
 DB_NAME=${{MySQL.MYSQLDATABASE}}
-ADMIN_KEY=smartpc2026
+ADMIN_KEY=<tu_clave_admin> 
 FRONTEND_URL=https://smartpc-frontend-production.up.railway.app
 ```
 
@@ -476,7 +476,7 @@ Ejemplo con PowerShell:
 Invoke-RestMethod `
   -Uri "https://smartpc-backend-production.up.railway.app/api/scraping/ejecutar" `
   -Method POST `
-  -Headers @{ "x-admin-key" = "smartpc2026" } `
+  -Headers @{ "x-admin-key" = "<tu_clave_admin>" } `
   -ContentType "application/json" `
   -Body '{"grupo":"oficina"}'
 ```
