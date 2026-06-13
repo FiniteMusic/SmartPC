@@ -424,9 +424,14 @@ export default function TerminosUso() {
       {/* ── Nav ── */}
       <nav className={`tu-nav${scrolled ? " tu-nav--scrolled" : ""}`}>
         <div className="tu-nav__inner">
-          <Link to="/" className="tu-nav__logo">
-            <span className="tu-nav__logo-text">Smart<em>PC</em></span>
-          </Link>
+          <a href="#" className="nav__logo">
+            <img
+              src="/logo_only.svg"
+              alt="SmartPC"
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
+            />
+            <span className="nav__logo-text">Smart<em>PC</em></span>
+          </a>
 
           <ul className="tu-nav__links">
             <li><Link to="/">Inicio</Link></li>

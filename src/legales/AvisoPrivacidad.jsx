@@ -345,11 +345,14 @@ export default function AvisoPrivacidad() {
       {/* ── Nav ── */}
       <nav className={`ap-nav${scrolled ? " ap-nav--scrolled" : ""}`}>
         <div className="ap-nav__inner">
-          <Link to="/" className="ap-nav__logo">
-            <span className="ap-nav__logo-text">
-              Smart<em>PC</em>
-            </span>
-          </Link>
+          <a href="#" className="nav__logo">
+            <img
+              src="/logo_only.svg"
+              alt="SmartPC"
+              onError={(e) => { e.currentTarget.style.display = "none"; }}
+            />
+            <span className="nav__logo-text">Smart<em>PC</em></span>
+          </a>
 
           <ul className="ap-nav__links">
             <li><Link to="/">Inicio</Link></li>
