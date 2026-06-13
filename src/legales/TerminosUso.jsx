@@ -253,31 +253,6 @@ const SECTIONS = [
     ),
   },
   {
-    id: "panel-admin",
-    icon: (
-      <svg viewBox="0 0 20 20" fill="none">
-        <circle cx="10" cy="10" r="3" stroke="currentColor" strokeWidth="1.5"/>
-        <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-    title: "Panel administrativo",
-    body: (
-      <>
-        <p>
-          SmartPC incluye un panel administrativo interno accesible en{" "}
-          <code>/admin/scraping</code>. Este panel está reservado exclusivamente para
-          personal autorizado del equipo de desarrollo o mantenimiento del sistema.
-        </p>
-        <p>
-          A través de él, los administradores pueden revisar, aprobar o descartar
-          productos obtenidos mediante procesos internos de actualización del catálogo.
-          El acceso no autorizado a esta sección queda fuera de los usos permitidos
-          descritos en estos términos.
-        </p>
-      </>
-    ),
-  },
-  {
     id: "propiedad",
     icon: (
       <svg viewBox="0 0 20 20" fill="none">
@@ -372,7 +347,7 @@ const SECTIONS = [
         </p>
         <div className="tu-contact">
           <span className="tu-contact__label">Correo de contacto</span>
-          <span className="tu-placeholder">correo@smartpc.com</span>
+          <span className="tu-placeholder">Marc_lio@outlook.com</span>
         </div>
       </>
     ),
